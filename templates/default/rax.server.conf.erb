@@ -1,0 +1,50 @@
+# This file was created by Chef for 
+# Manual changes will be lost
+
+input {
+  tcp {
+    type => syslog
+    port => 5544
+  }
+  udp {
+    type => syslog
+    port => 5544
+  }
+}
+
+filter {
+  #####BEGIN SYSLOG SECTION #####
+  #syslog section configured following http://cookbook.logstash.net/recipes/syslog-pri/
+
+  grok {
+      type => "syslog"
+      pattern => <%= [ "<%{POSINT:syslog_pri}>%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" ] %>
+  }
+  syslog_pri {
+      type => "syslog"
+  }
+  date {
+      type => "syslog"
+      match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+  }
+  mutate {
+      type => "syslog"
+      exclude_tags => "_grokparsefailure"
+      replace => [ "@source_host", "%{syslog_hostname}" ]
+      replace => [ "@message", "%{syslog_message}" ]
+  }
+  mutate {
+      type => "syslog"
+      remove => [ "syslog_hostname", "syslog_message", "syslog_timestamp" ]
+  }
+  #####END SYSLOG SECTION #####
+}
+
+output {
+  <% if not @es_server_ip.empty? -%>
+  elasticsearch_http { 
+    host => "<%= @es_server_ip %>"
+    flush_size => 1 
+  }
+  <% end -%>
+}

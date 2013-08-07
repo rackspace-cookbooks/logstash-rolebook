@@ -1,0 +1,6 @@
+#This file is managed by Chef
+#Any changes to this file be overwritten
+
+auth,authpriv.*                 @@<%= @logstash_server_ip %>:5544
+*.*;auth,authpriv.none          @@<%= @logstash_server_ip %>:5544
+kern.*                          @@<%= @logstash_server_ip %>:5544

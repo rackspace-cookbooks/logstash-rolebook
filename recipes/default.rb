@@ -2,9 +2,7 @@
 # Cookbook Name:: logstash-rolebook
 # Recipe:: default
 #
-# Copyright 2013, YOUR_COMPANY_NAME
+# Copyright 2013, Rackspace
 #
 # All rights reserved - Do Not Redistribute
 #
-
-include_recipe "chef-logstash::default"
