@@ -10,59 +10,28 @@ Requirements
 TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
 
 e.g.
-#### packages
-- `toaster` - logstash-rolebook needs toaster to brown your bagel.
+#### supporting cookbooks
+- `elasticsearch` - logstash-rolebook needs an elasticsearch node to point too
+- `kibana` - web frontend for searching logs
+- `logstash` - to do the shipping/indexes heavy lifting 
 
-Attributes
-----------
-TODO: List you cookbook attributes here.
 
-e.g.
-#### logstash-rolebook::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['logstash-rolebook']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
 
 Usage
 -----
+
+#### Roles:
+You'll want to create two roles that reference the recipes in this cookbook:
+-   `elasticsearch_server` which includes recipe[logstash-rolebook::elasticsearch_server]
+-   `logstash_server` which includes recipe[logstash-rolebook::logstash_server]
+
+#### Agents:
+Logstash agents can be added by including the `logstash-rolebook::logstash_agent` recipe
+
 #### logstash-rolebook::default
-TODO: Write usage instructions for each cookbook.
+Default recipe doesn't do anything
 
-e.g.
-Just include `logstash-rolebook` in your node's `run_list`:
-
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[logstash-rolebook]"
-  ]
-}
-```
-
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write you change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+Authors: Ryan Richard
